@@ -12,16 +12,24 @@ import {
 import { BellIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import { Avatar } from "@chakra-ui/avatar";
 import React, { useState } from "react";
+
+import ProfileModal from "./ProfileModal.js";
 import { ChatState } from "../../Context/ChatProvider";
-import ProfileModal from "./ProfileModal";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min.js";
 
 const SideDrawer = () => {
   const [search, setSearch] = useState("");
   const [searchResult, setSearchResult] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loadingChat, setLoadingChat] = useState();
-
   const { user } = ChatState();
+
+  const history = useHistory();
+
+  const logoutHandler = () => {
+    localStorage.removeItem("userInfo");
+    history.push("/");
+  };
 
   return (
     <>
@@ -60,10 +68,10 @@ const SideDrawer = () => {
               />
             </MenuButton>
             <MenuList>
-              <ProfileModal></ProfileModal>
+              <ProfileModal user={user}></ProfileModal>
               <MenuItem>My Profile</MenuItem>
               <MenuDivider />
-              <MenuItem>Logout</MenuItem>
+              <MenuItem onClick={logoutHandler}>Logout</MenuItem>
             </MenuList>
           </Menu>
         </div>

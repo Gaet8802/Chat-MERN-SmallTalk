@@ -9,6 +9,9 @@ import {
   ModalBody,
   ModalFooter,
   Button,
+  Flex,
+  Image,
+  Text,
 } from "@chakra-ui/react";
 import { ViewIcon } from "@chakra-ui/icons";
 import React from "react";
@@ -19,22 +22,44 @@ const ProfileModal = ({ user, children }) => {
   return (
     <>
       {children ? (
-        <span onClick={onOpen}></span>
+        <span onClick={onOpen}>{children}</span>
       ) : (
         <IconButton d={{ base: "flex" }} icon={<ViewIcon />} onClick={onOpen} />
       )}
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal size="lg" isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Modal Title</ModalHeader>
+        <ModalContent h="410px">
+          <ModalHeader fontSize="40px" fontFamily="Work sans">
+            <Flex justifyContent="center">{user.name}</Flex>
+          </ModalHeader>
+
           <ModalCloseButton />
-          <ModalBody>fffffff</ModalBody>
+          <ModalBody justifyContent="space-between">
+            <Flex
+              h="100%"
+              flexDir="column"
+              alignItems="center"
+              justifyContent="space-between"
+            >
+              <Image
+                borderRadius="full"
+                boxSize="150px"
+                src={user.pic}
+                alt={user.name}
+              />
+              <Text
+                fontSize={{ base: "28px", md: "30px" }}
+                fontFamily="Work sans"
+              >
+                Email: {user.email}
+              </Text>
+            </Flex>
+          </ModalBody>
 
           <ModalFooter>
             <Button colorScheme="blue" mr={3} onClick={onClose}>
               Close
             </Button>
-            <Button variant="ghost">Secondary Action</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
