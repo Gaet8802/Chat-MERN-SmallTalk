@@ -11,10 +11,10 @@ import {
 } from "@chakra-ui/react";
 import { BellIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import { Avatar } from "@chakra-ui/avatar";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 
 import ProfileModal from "./ProfileModal.js";
-import { ChatState } from "../../Context/ChatProvider";
+import { ChatContext } from "../../Context/ChatProvider";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min.js";
 
 const SideDrawer = () => {
@@ -22,6 +22,9 @@ const SideDrawer = () => {
   const [searchResult, setSearchResult] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loadingChat, setLoadingChat] = useState();
+  const ChatState = () => {
+    return useContext(ChatContext);
+  };
   const { user } = ChatState();
 
   const history = useHistory();
