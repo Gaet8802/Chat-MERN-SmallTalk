@@ -11,13 +11,14 @@ import {
 import React, { useState } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
+import { ChatState } from "../../Context/ChatProvider";
 
 const Login = () => {
   const [show, setShow] = useState(false);
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [loading, setLoading] = useState(false);
-
+  const { setUser } = ChatState();
   const toast = useToast();
   const history = useHistory();
   const handleClick = () => setShow(!show);
@@ -49,6 +50,7 @@ const Login = () => {
         config
       );
       console.log(JSON.stringify(data));
+      setUser(data);
       toast({
         title: "Login Successful",
         status: "success",
