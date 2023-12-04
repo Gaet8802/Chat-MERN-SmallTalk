@@ -8,7 +8,8 @@ import {
   Button,
   useToast,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import { ChatState } from "../../Context/ChatProvider";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 
@@ -19,6 +20,7 @@ const Signup = () => {
   const [confirmpassword, setConfirmpassword] = useState();
   const [password, setPassword] = useState();
   const [pic, setPic] = useState();
+  const { setUser } = ChatState();
   const [loading, setLoading] = useState(false);
   const toast = useToast();
   const history = useHistory();
@@ -108,6 +110,7 @@ const Signup = () => {
         { name, email, password, pic },
         config
       );
+
       toast({
         title: "Registration Successful",
         status: "success",
@@ -116,9 +119,9 @@ const Signup = () => {
         position: "bottom",
       });
 
-      localStorage.setItem("userInfo", JSON.stringify(data));
-
       setLoading(false);
+      setUser(data);
+      localStorage.setItem("userInfo", JSON.stringify(data));
       history.push("/chats");
     } catch (error) {
       toast({

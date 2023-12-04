@@ -17,10 +17,14 @@ const HomePage = () => {
   const history = useHistory();
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("userInfo"));
+    const fetchInfo = async () => {
+      const user = await JSON.parse(localStorage.getItem("userInfo"));
+    };
 
-    if (user) {
-      history.push("/chats");
+    if (!"userInfo") {
+      history.push("/");
+    } else {
+      fetchInfo();
     }
   }, [history]);
 

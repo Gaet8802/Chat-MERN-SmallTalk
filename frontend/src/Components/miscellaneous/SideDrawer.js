@@ -28,6 +28,8 @@ import { ChatState } from "../../Context/ChatProvider";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min.js";
 import ChatLoading from "../ChatLoading.js";
 import UserListitem from "../Useravatar/UserListitem.js";
+import { getSender } from "../../config/ChatLogics.js";
+import "../styles.css";
 
 const SideDrawer = () => {
   const [search, setSearch] = useState("");
@@ -35,7 +37,14 @@ const SideDrawer = () => {
   const [loading, setLoading] = useState(false);
   const [loadingChat, setLoadingChat] = useState();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { user, setSelectedChat, chats, setChats } = ChatState();
+  const {
+    user,
+    setSelectedChat,
+    chats,
+    setChats,
+    notification,
+    setNotification,
+  } = ChatState();
 
   const history = useHistory();
   const toast = useToast();
@@ -135,7 +144,26 @@ const SideDrawer = () => {
           <Menu>
             <MenuButton p={1}>
               <BellIcon fontSize="2xl" m={1} />
+              {notification.length > 0 && (
+                <span className="badge">{notification.length}</span>
+              )}
             </MenuButton>
+            <MenuList pl={2}>
+              {!notification.length && "No new messages"}
+              {notification.map((notif) => (
+                <MenuItem
+                  key={notif._id}
+                  onClick={() => {
+                    setSelectedChat(notif.chat);
+                    setNotification(notification.filter((n) => n !== notif));
+                  }}
+                >
+                  {notif.chat.isGroupChat
+                    ? `New Message in ${notif.chat.chatName}`
+                    : `New Message From ${getSender(user, notif.chat.users)}`}
+                </MenuItem>
+              ))}
+            </MenuList>
           </Menu>
           <Menu>
             <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
@@ -147,8 +175,11 @@ const SideDrawer = () => {
               />
             </MenuButton>
             <MenuList>
-              <ProfileModal user={user}></ProfileModal>
-              <MenuItem>My Profile</MenuItem>
+              <MenuItem>
+                <ProfileModal user={user}>
+                  <Text w="100%">My profile</Text>
+                </ProfileModal>
+              </MenuItem>
               <MenuDivider />
               <MenuItem onClick={logoutHandler}>Logout</MenuItem>
             </MenuList>
