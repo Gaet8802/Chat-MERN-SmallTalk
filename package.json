@@ -11,6 +11,7 @@
   "author": "gaet",
   "license": "ISC",
   "dependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@babel/plugin-transform-private-property-in-object": "^7.23.4",
     "bcryptjs": "^2.4.3",
     "dotenv": "^16.3.1",
