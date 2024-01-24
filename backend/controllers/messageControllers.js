@@ -49,4 +49,18 @@ const sendMessage = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { sendMessage, allMessages };
+const markAsRead = asyncHandler(async (req, res) => {
+  try {
+    const { chatId } = req.body.chat;
+
+    const messageRead = await Message.updateMany(chatId, {
+      $set: { read: true },
+    });
+    res.json(messageRead);
+  } catch (error) {
+    res.status(400);
+    throw new Error(error.message);
+  }
+});
+
+module.exports = { sendMessage, allMessages, markAsRead };

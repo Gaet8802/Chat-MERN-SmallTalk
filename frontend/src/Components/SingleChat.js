@@ -54,6 +54,16 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         config
       );
 
+      data
+        .filter((d) => !d.read)
+        .map((d) => {
+          return { ...d, read: true };
+        });
+
+      axios.put(`/api/message/${selectedChat._id}/read`, config);
+      // data.filter((d) => !d.read).map((d) => {return {...d, read:true}})
+      // axios.post(/api/messages/${selectedChat._id}/markRead)
+
       setMessages(data);
       setLoading(false);
       socket.emit("join chat", selectedChat._id);
